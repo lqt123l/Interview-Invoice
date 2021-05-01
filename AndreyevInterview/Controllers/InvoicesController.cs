@@ -45,7 +45,6 @@ namespace AndreyevInterview.Controllers
             lineItem.Description = input.Description;
             lineItem.Quantity = input.Quantity;
             lineItem.Cost = input.Cost;
-            lineItem.Billable = input.Billable;
             _context.Add(lineItem);
             _context.SaveChanges();
             return lineItem;
@@ -62,6 +61,5 @@ namespace AndreyevInterview.Controllers
         public string Description { get; set; }
         public int Quantity { get; set; }
         public decimal Cost { get; set; }
-        public string Billable { get; set; }
     }
 }

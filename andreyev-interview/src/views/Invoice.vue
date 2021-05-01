@@ -70,7 +70,6 @@ export default defineComponent({
       quantity: "0",
       cost: "0",
       totalValue: "0",
-      billable:false
     });
 
     function fetchLineItems() {
