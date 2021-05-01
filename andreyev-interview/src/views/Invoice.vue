@@ -4,7 +4,7 @@
 
     <h2>Invoice Details</h2>
 
-    <span>Invoice #{{$route.params.id}}</span>
+    <span>Invoice #{{ $route.params.id }}</span>
 
     <h3>Line Items</h3>
 
@@ -17,71 +17,107 @@
       </thead>
       <tbody>
         <tr v-for="item in state.lineItems" :key="item.id">
-          <td>{{item.id}}</td>
-          <td>{{item.description}}</td>
-          <td>{{item.quantity}}</td>
-          <td>{{item.cost}}</td>
+          <td>{{ item.id }}</td>
+          <td>{{ item.description }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.cost }}</td>
         </tr>
       </tbody>
     </table>
 
+    <div>Total Value: {{ state.totalValue }}</div>
+
     <form @submit.prevent>
       <h4>Create Line Item</h4>
-      <input type="text" name="description" placeholder="Description" v-model="state.description" />
-      <input type="number" name="quantity" placeholder="Quantity" v-model="state.quantity" />
-      <input type="number" name="cost" placeholder="Cost" v-model="state.cost" />
+      <input
+        type="text"
+        name="description"
+        placeholder="Description"
+        v-model="state.description"
+      />
+      <input
+        type="number"
+        name="quantity"
+        placeholder="Quantity"
+        v-model="state.quantity"
+      />
+      <input
+        type="number"
+        name="cost"
+        placeholder="Cost"
+        v-model="state.cost"
+      />
       <button @click="createLineItem">Create Invoice</button>
     </form>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, reactive} from "vue";
+import { defineComponent, onMounted, reactive } from "vue";
 
 export default defineComponent({
   name: "Invoice",
   props: {
     id: {
       type: [String, Number],
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props) {
     const state = reactive({
       lineItems: [],
       description: "",
       quantity: "0",
-      cost: "0"
-    })
+      cost: "0",
+      totalValue: "0",
+    });
 
     function fetchLineItems() {
       fetch(`http://localhost:5000/invoices/${props.id}`, {
         method: "GET",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
       }).then((response) => {
-        response.json().then(lineItems => (state.lineItems = lineItems))
-      })
+        response.json().then((lineItems) => {
+          state.lineItems = lineItems;
+          state.totalValue = setTotalValue(lineItems);
+        });
+      });
     }
 
     function createLineItem() {
       fetch(`http://localhost:5000/invoices/${props.id}`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           description: state.description,
           quantity: Number(state.quantity),
-          cost: Number(state.cost)
-        })
-      }).then(fetchLineItems)
+          cost: Number(state.cost),
+        }),
+      }).then(fetchLineItems);
     }
 
-    onMounted(fetchLineItems)
+    interface LineItem {
+      id: number;
+      invoiceId: number;
+      description: string;
+      quantity: number;
+      cost: number;
+    }
+    function setTotalValue(lineItems: Array<LineItem>): string {
+      var totalValue: number = 0;
+      lineItems.forEach((item) => {
+        totalValue += item.quantity * item.cost;
+      });
+      return totalValue.toString();
+    }
 
-    return {state, createLineItem}
-  }
-})
+    onMounted(fetchLineItems);
+
+    return { state, createLineItem };
+  },
+});
 </script>
