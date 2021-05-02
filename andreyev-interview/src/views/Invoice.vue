@@ -14,6 +14,7 @@
         <th>Description</th>
         <th>Quantity</th>
         <th>Cost</th>
+        <th>Billable</th>
       </thead>
       <tbody>
         <tr v-for="item in state.lineItems" :key="item.id">
@@ -21,11 +22,18 @@
           <td>{{ item.description }}</td>
           <td>{{ item.quantity }}</td>
           <td>{{ item.cost }}</td>
+          <td>
+            <input
+              type="checkbox"
+              :value="item.id"
+              @change="onBillableChange(item.id)"
+            />
+          </td>
         </tr>
       </tbody>
     </table>
 
-    <div>Total Value: {{ state.totalValue }}</div>
+    <div>Total Value: {{ totalValue }}</div>
 
     <form @submit.prevent>
       <h4>Create Line Item</h4>
@@ -53,7 +61,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive } from "vue";
+import { computed, defineComponent, onMounted, reactive } from "vue";
 
 export default defineComponent({
   name: "Invoice",
@@ -69,7 +77,24 @@ export default defineComponent({
       description: "",
       quantity: "0",
       cost: "0",
-      totalValue: "0",
+      billableItems: [],
+    });
+
+    interface LineItem {
+      id: number;
+      invoiceId: number;
+      description: string;
+      quantity: number;
+      cost: number;
+    }
+
+    const totalValue = computed(() => {
+      let sumValue: number = 0;
+      const items: Array<LineItem> = state.lineItems;
+      items.forEach((item) => {
+        sumValue += item.quantity * item.cost;
+      });
+      return sumValue;
     });
 
     function fetchLineItems() {
@@ -81,7 +106,7 @@ export default defineComponent({
       }).then((response) => {
         response.json().then((lineItems) => {
           state.lineItems = lineItems;
-          state.totalValue = setTotalValue(lineItems);
+          console.log(state.lineItems);
         });
       });
     }
@@ -100,24 +125,13 @@ export default defineComponent({
       }).then(fetchLineItems);
     }
 
-    interface LineItem {
-      id: number;
-      invoiceId: number;
-      description: string;
-      quantity: number;
-      cost: number;
-    }
-    function setTotalValue(lineItems: Array<LineItem>): string {
-      var totalValue: number = 0;
-      lineItems.forEach((item) => {
-        totalValue += item.quantity * item.cost;
-      });
-      return totalValue.toString();
+    function onBillableChange(id: number) {
+      console.log(id);
     }
 
     onMounted(fetchLineItems);
 
-    return { state, createLineItem };
+    return { state, createLineItem, totalValue, onBillableChange };
   },
 });
 </script>
