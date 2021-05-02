@@ -1,3 +1,4 @@
+
 <template>
   <div class="about">
     <router-link :to="{ name: 'Invoices' }">Back</router-link>
@@ -32,8 +33,14 @@
         </tr>
       </tbody>
     </table>
-
-    <div>Total Value: {{ totalValue }}</div>
+    <div class="flex-row-div">
+      <div class="value-number-div">
+        Total Value: <b>{{ totalValue }}</b>
+      </div>
+      <div class="value-number-div">
+        Total Billable Value: <b>{{ totalBillableValue }}</b>
+      </div>
+    </div>
 
     <form @submit.prevent>
       <h4>Create Line Item</h4>
@@ -63,6 +70,14 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, reactive } from "vue";
 
+interface LineItem {
+  id: number;
+  invoiceId: number;
+  description: string;
+  quantity: number;
+  cost: number;
+}
+
 export default defineComponent({
   name: "Invoice",
   props: {
@@ -73,20 +88,12 @@ export default defineComponent({
   },
   setup(props) {
     const state = reactive({
-      lineItems: [],
+      lineItems: <LineItem[]>[],
       description: "",
       quantity: "0",
       cost: "0",
-      billableItems: [],
+      billableItemsId: <Number[]>[],
     });
-
-    interface LineItem {
-      id: number;
-      invoiceId: number;
-      description: string;
-      quantity: number;
-      cost: number;
-    }
 
     const totalValue = computed(() => {
       let sumValue: number = 0;
@@ -126,12 +133,47 @@ export default defineComponent({
     }
 
     function onBillableChange(id: number) {
-      console.log(id);
+      const index = state.billableItemsId.indexOf(id);
+      if (index === -1) {
+        state.billableItemsId.push(id);
+      } else {
+        state.billableItemsId.splice(index, 1);
+      }
     }
+
+    const totalBillableValue = computed(() => {
+      console.log(state.billableItemsId);
+      let sumValue: number = 0;
+      state.billableItemsId.forEach((id) => {
+        state.lineItems.forEach((item) => {
+          if (id === item.id) {
+            sumValue += item.quantity * item.cost;
+          }
+        });
+      });
+      return sumValue;
+    });
 
     onMounted(fetchLineItems);
 
-    return { state, createLineItem, totalValue, onBillableChange };
+    return {
+      state,
+      createLineItem,
+      totalValue,
+      onBillableChange,
+      totalBillableValue,
+    };
   },
 });
 </script>
+
+<style scoped>
+.flex-row-div {
+  display: flex;
+  flex-direction: row;
+}
+
+.value-number-div {
+  margin: 0 10px;
+}
+</style>
