@@ -142,7 +142,6 @@ export default defineComponent({
     }
 
     const totalBillableValue = computed(() => {
-      console.log(state.billableItemsId);
       let sumValue: number = 0;
       state.billableItemsId.forEach((id) => {
         state.lineItems.forEach((item) => {

@@ -20,6 +20,7 @@ namespace AndreyevInterview
             modelBuilder.Entity<LineItem>().Property(b => b.InvoiceId).IsRequired();
             modelBuilder.Entity<LineItem>().Property(b => b.Quantity).IsRequired();
             modelBuilder.Entity<LineItem>().Property(b => b.Cost).IsRequired();
+            modelBuilder.Entity<LineItem>().Property(b => b.Billable).IsRequired();
         }
     }
 
@@ -37,7 +38,9 @@ namespace AndreyevInterview
 
         public int Quantity { get; set; }
         public decimal Cost { get; set; }
+        public string Billable { get; set; }
 
         public Invoice Invoice { get; set; }
     }
+
 }

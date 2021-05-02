@@ -59,3 +59,4 @@ D:\InterviewProject\Invoicing-Test-App-main\AndreyevInterview\AndreyevInterview\
 D:\InterviewProject\Invoicing-Test-App-main\AndreyevInterview\AndreyevInterview\AndreyevInterview\obj\Debug\netcoreapp3.1\AndreyevInterview.dll
 D:\InterviewProject\Invoicing-Test-App-main\AndreyevInterview\AndreyevInterview\AndreyevInterview\obj\Debug\netcoreapp3.1\AndreyevInterview.pdb
 D:\InterviewProject\Invoicing-Test-App-main\AndreyevInterview\AndreyevInterview\AndreyevInterview\obj\Debug\netcoreapp3.1\AndreyevInterview.genruntimeconfig.cache
+D:\InterviewProject\Invoicing-Test-App-main\AndreyevInterview\AndreyevInterview\AndreyevInterview\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll

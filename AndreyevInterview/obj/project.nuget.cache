@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "xlGd6bu+PEm9/1WsdtvBswH5c8bKDDfrP3uNoOVLjOXSA/bXG1MmNyBEO80YzuBl2EksUWVY/GFDjEGIrObz4Q==",
+  "dgSpecHash": "ZpgRRLY7DEfFfpz1JkOP/iyzsc14MyymVeB40Dn9IOKj465VU6KcGYhWaopM3j6Ua1QKDPc8ITFv8k4rYI/E4A==",
   "success": true,
   "projectFilePath": "D:\\InterviewProject\\Invoicing-Test-App-main\\AndreyevInterview\\AndreyevInterview\\AndreyevInterview\\AndreyevInterview.csproj",
   "expectedPackageFiles": [
@@ -25,6 +25,7 @@
     "C:\\Users\\61457\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\5.0.0\\microsoft.extensions.logging.abstractions.5.0.0.nupkg.sha512",
     "C:\\Users\\61457\\.nuget\\packages\\microsoft.extensions.options\\5.0.0\\microsoft.extensions.options.5.0.0.nupkg.sha512",
     "C:\\Users\\61457\\.nuget\\packages\\microsoft.extensions.primitives\\5.0.0\\microsoft.extensions.primitives.5.0.0.nupkg.sha512",
+    "C:\\Users\\61457\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\61457\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.0.4\\sqlitepclraw.bundle_e_sqlite3.2.0.4.nupkg.sha512",
     "C:\\Users\\61457\\.nuget\\packages\\sqlitepclraw.core\\2.0.4\\sqlitepclraw.core.2.0.4.nupkg.sha512",
     "C:\\Users\\61457\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.0.4\\sqlitepclraw.lib.e_sqlite3.2.0.4.nupkg.sha512",

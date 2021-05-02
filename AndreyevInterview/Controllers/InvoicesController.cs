@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace AndreyevInterview.Controllers
 {
@@ -49,6 +50,38 @@ namespace AndreyevInterview.Controllers
             _context.SaveChanges();
             return lineItem;
         }
+        [HttpGet("allInvoices")]
+        public string GetAll()
+        {
+            var allBillableLineItems = new List<BillableLineItem>();
+            var allInvoices = _context.Invoices.ToList();
+            foreach (Invoice invoice in allInvoices)
+            {
+                BillableLineItem item = new BillableLineItem();
+                decimal totalValue = 0;
+                decimal totalBillableValue = 0;
+                int totalNumberLineItems = 0;
+                var lineItems = _context.LineItems.Where(x => x.InvoiceId == invoice.Id).ToList();
+                totalNumberLineItems = lineItems.Count();
+                foreach (LineItem lineItem in lineItems)
+                {
+                    decimal singleLineValue = lineItem.Cost * lineItem.Quantity;
+
+                    if (lineItem.Billable == "true")
+                    {
+                        totalBillableValue += singleLineValue;
+                    }
+                    totalValue += singleLineValue;
+                }
+                item.Id = invoice.Id;
+                item.Description = invoice.Description;
+                item.totalValue = totalValue;
+                item.totalBillableValue = totalBillableValue;
+                item.totalNumberLineItems = totalNumberLineItems; 
+                allBillableLineItems.Add(item);
+            }
+            return JsonConvert.SerializeObject(allBillableLineItems, Formatting.Indented);         
+        }
     }
 
     public class InvoiceInput
@@ -61,5 +94,13 @@ namespace AndreyevInterview.Controllers
         public string Description { get; set; }
         public int Quantity { get; set; }
         public decimal Cost { get; set; }
+    }
+    public class BillableLineItem
+    {
+        public int Id { get; set; }
+        public string Description { get; set; }
+        public decimal totalValue { get; set; }
+        public decimal totalBillableValue { get; set; }
+        public int totalNumberLineItems { get; set; }
     }
 }
